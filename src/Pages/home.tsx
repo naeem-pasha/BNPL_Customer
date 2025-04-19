@@ -541,10 +541,7 @@ const RejecteDetail = () => {
 };
 
 interface ConfirmationRequestProps {
-  data: {
-    _id: string;
-    // other properties of the data object
-  };
+  data: UserData;
 }
 
 const ConfirmationRequest: React.FC<ConfirmationRequestProps> = ({ data }) => {
@@ -605,20 +602,19 @@ const ConfirmationRequest: React.FC<ConfirmationRequestProps> = ({ data }) => {
                 </svg>
               </div>
               <h1 className="text-2xl font-bold text-blue-700 mb-2">
-                Delivery Confirmation
+                Dear Customer,
               </h1>
               <div className="w-16 h-1 bg-blue-300 mx-auto mb-4"></div>
             </div>
 
             <p className="text-gray-700 mb-5">
-              Please review the delivery details and confirm you are ready to
-              accept the package.
+              Please confirm that you have taken the delivery and possession of
+              the below item(s) on MBL’s behalf. Asset Name {data.bikeVarient},
             </p>
 
             <div className="bg-blue-50 p-4 border-l-4 border-blue-500 mb-5">
               <p className="text-sm text-blue-800">
-                Ensure all items are present and in good condition before
-                confirmation.
+                Engine # {data.engineNo} || Chassis # {data.chasisNo}
               </p>
             </div>
 

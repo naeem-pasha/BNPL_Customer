@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 const userValidationSchema = require("../Utils/Validation.js");
 const { default: axios } = require("axios");
 const { data } = require("autoprefixer");
+const { Axis3D } = require("lucide-react");
 
 const createUser = async (req, res) => {
   try {
@@ -26,6 +27,8 @@ const createUser = async (req, res) => {
       price,
       installment_tenure,
     } = req.body;
+
+    console.log(price);
 
     // Generate random 8-character password
     const randomPassword = Math.random().toString(36).slice(-8);
@@ -81,7 +84,7 @@ const createUser = async (req, res) => {
         .json({ message: "Validation failed", errors: validationErrors });
     }
 
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Internal User server error " });
   }
 };
 const loginUser = async (req, res) => {
@@ -540,6 +543,71 @@ const userAcceptDelivery = async (req, res) => {
     });
   }
 };
+
+const getDistributerDetail = async (req, res) => {
+  try {
+    const { number } = req.params;
+
+    const response = await axios.get(
+      `${process.env.DISTRIBUTER_SERVER_URL}/api/get-distributer-detail/${number}`
+    );
+    if (response.status === 200) {
+      return res.status(200).json({
+        success: true,
+        data: response.data,
+      });
+    } else {
+      return res.status(response.status).json({
+        success: false,
+        message: "Failed to fetch distributor details",
+        data: response.data,
+      });
+    }
+  } catch (error) {
+    console.error("Error fetching distributor detail:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong while fetching distributor details",
+    });
+  }
+};
+
+const assaignDate = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { deliveryDate } = req.body;
+    if (!id || !deliveryDate) {
+      return res
+        .status(400)
+        .json({ success: false, message: "ID and deliveryDate are required." });
+    }
+
+    const result = await User.findByIdAndUpdate(
+      id,
+      { deliveryDate },
+      { new: true }
+    );
+
+    if (!result) {
+      return res
+        .status(404)
+        .json({ success: false, message: "USer not found." });
+    }
+
+    res.status(200).json({
+      message: "Delivery date updated successfully.",
+      data: result,
+      success: true,
+    });
+  } catch (error) {
+    console.error("Error updating delivery date: in user", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error IN USER, please try again later.",
+    });
+  }
+};
+
 module.exports = {
   createUser,
   loginUser,
@@ -555,4 +623,6 @@ module.exports = {
   sendInvoiceToUser,
   confirmationRequest,
   userAcceptDelivery,
+  getDistributerDetail,
+  assaignDate,
 };

@@ -13,9 +13,8 @@ const connectToDatabase = async () => {
   }
 
   try {
-    const uri =
-      process.env.MONGO_URI || "mongodb://localhost:27017/user-dashboard";
-
+    const uri = process.env.MONGO_URI;
+    //  "mongodb://localhost:27017/user-dashboard"
     // Connect to MongoDB
     const db = await mongoose.connect(uri);
 

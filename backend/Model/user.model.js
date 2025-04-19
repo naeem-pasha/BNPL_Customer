@@ -23,6 +23,7 @@ const userSchema = new mongoose.Schema(
     status: { type: String },
     distributerNo: { type: Number },
     finalAcceptence: { type: Boolean, default: false },
+    deliveryDate: { type: String },
     isPublishedDeliveryLetter: { type: Boolean, default: false },
     isAcceptMusawamah: { type: Boolean, default: false },
     isSendAutherizedToUser: { type: Boolean },

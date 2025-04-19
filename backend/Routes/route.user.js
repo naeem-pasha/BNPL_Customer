@@ -14,6 +14,8 @@ const {
   sendInvoiceToUser,
   confirmationRequest,
   userAcceptDelivery,
+  getDistributerDetail,
+  assaignDate,
 } = require("../Controller/user.js");
 const authMiddleware = require("../Middleware/authmiddleware.js");
 
@@ -46,5 +48,9 @@ route.put("/send-invoice-user/:id", sendInvoiceToUser);
 route.put("/confirmation-request/:id", confirmationRequest);
 
 route.put("/accept-delivery/:id", userAcceptDelivery);
+
+route.get("/get-distributer-detail/:number", getDistributerDetail);
+
+route.put("/assaign-date/:id", assaignDate);
 
 module.exports = route;

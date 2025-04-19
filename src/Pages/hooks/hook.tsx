@@ -24,6 +24,7 @@ export interface UserData {
   isSendAutherizedToUser: boolean;
   isSendInvoiceToUser: boolean;
   confirmationRequest: boolean;
+  deliveryDate: string;
   name: string;
   phoneNo: string;
   status: string;

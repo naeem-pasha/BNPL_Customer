@@ -1,8 +1,34 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ViewDetailProps } from "@/Pages/home";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const DeliveryAuthorizationDialog: React.FC<ViewDetailProps> = ({ data }) => {
+  const [distributerDetail, setDistributerDetail] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchDistributerDetail = async () => {
+      if (!data?.distributerNo) return;
+
+      try {
+        const response = await axios.get(
+          `${
+            import.meta.env.VITE_USER_SERVER
+          }/api/user/get-distributer-detail/${data.distributerNo}`
+        );
+        console.log(response);
+        if (response.status === 200) {
+          setDistributerDetail(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching distributer detail:", error);
+      }
+    };
+
+    fetchDistributerDetail();
+  }, [data?.distributerNo]);
+
   return (
     <Dialog>
       {/* Trigger Button */}
@@ -43,7 +69,7 @@ const DeliveryAuthorizationDialog: React.FC<ViewDetailProps> = ({ data }) => {
               </div>
               <div className="flex gap-2">
                 <span className="font-semibold w-20">From:</span>
-                <span>Megzap Bank Ltd.</span>
+                <span>Meezan Bank Ltd.</span>
               </div>
             </div>
           </div>
@@ -55,9 +81,13 @@ const DeliveryAuthorizationDialog: React.FC<ViewDetailProps> = ({ data }) => {
             Re: Authorization to Deliver the Goods
           </h3>
           <p className="text-gray-600 mb-4">
-            With reference to the Sales Receipt Number MBL/2020/xxx, dated
-            <span className="font-semibold"> 06th October 2020</span>, we hereby
-            confirm its receipt and hereby authorize you as MBL's agent to take
+            With reference to the Sales Receipt Number {data?._id.split("-")[0]}
+            , dated
+            <span className="font-semibold">
+              {" "}
+              {data?.updatedAt.split("T")[0]}
+            </span>
+            , we hereby confirm its receipt and hereby authorize you to take
             possession of the Goods and deliver it to our customer as per
             following details:
           </p>
@@ -106,17 +136,36 @@ const DeliveryAuthorizationDialog: React.FC<ViewDetailProps> = ({ data }) => {
             </div>
             <div className="flex gap-2">
               <span className="font-semibold w-32">Delivery Time Period:</span>
-              <span>(9AM to 6 PM)</span>
+              <span>(9AM to 6 PM) {data?.deliveryDate}</span>
             </div>
           </div>
         </div>
 
+        {/* Distributer Information */}
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <div className="space-y-2">
+            <div className="flex gap-2">
+              <span className="font-semibold w-32">Distributer Name:</span>
+              <span>Mr. {distributerDetail?.data?.data?.name}</span>
+            </div>
+            <div className="flex gap-2">
+              <span className="font-semibold w-32">Distributer Contact #:</span>
+              <span> {distributerDetail?.data?.data?.phoneNo}</span>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <div className="flex gap-2">
+              <span className="font-semibold w-32">Distributer Address:</span>
+              <span>{distributerDetail?.data?.data?.address}</span>
+            </div>
+          </div>
+        </div>
         {/* Footer Section */}
         <div className="mt-8 border-t-2 pt-4">
           <div className="text-right">
             <p className="font-semibold">For and on behalf of</p>
             <p className="text-lg font-bold text-gray-700">
-              Megzap Bank Limited
+              Meezan Bank Limited
             </p>
           </div>
         </div>
