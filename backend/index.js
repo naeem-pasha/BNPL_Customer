@@ -15,10 +15,9 @@ connectToDatabase();
 app.use(
   cors({
     origin: [
-      "http://localhost:7000",
-      "http://localhost:8000",
-      "http://localhost:8001",
-      "http://localhost:10000",
+      `${process.env.USER_FRONTEND_URL}`,
+      `${process.env.BANK_FRONTEND_URL}`,
+      `${process.env.DISTRIBUTER_FRONTEND_URL}`,
     ],
     credentials: true,
   })
