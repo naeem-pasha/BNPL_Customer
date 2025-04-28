@@ -78,17 +78,20 @@ const DeliveryAuthorizationDialog: React.FC<ViewDetailProps> = ({ data }) => {
         {/* Subject Section */}
         <div className="mb-6">
           <h3 className="text-lg font-bold mb-4 border-b-2 border-dashed pb-2">
-            Re: Authorization to take delivery of Bike.
+            Authorization to take delivery of Bike.
           </h3>
           <p className="text-gray-600 mb-4">
-            With reference to the Sale offer, Number {data?._id.split("-")[0]},
+            {/* With reference to the Sale offer, Number 
             dated
             <span className="font-semibold">
               {" "}
               {data?.updatedAt.split("T")[0]}
             </span>
             , we hereby confirm its receipt and hereby allow you to take
-            delivery of your bike, have following details:
+            delivery of your bike, have following details: */}
+            With reference to the Musawamah contract, signed between MBL and
+            you, # {data?._id.split("-")[0]},. We hereby allow you to take
+            possession of the Bike from and have following details:
           </p>
         </div>
 
