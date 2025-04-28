@@ -299,14 +299,9 @@ const ViewDetail: React.FC<ViewDetailProps> = ({ data }) => {
               <div className="max-w-3xl mx-auto bg-white p-6 font-serif text-black">
                 <div className="text-center mb-4">
                   <p className="text-xs mb-2">
-                    THIS Appendix shall be attached to and form an integral part
+                    This Appendix shall be attached to and form an integral part
                     of the package of Master Musawamah Agreement (the
-                    "Agreement") made at{" "}
-                    <span className="underline font-bold">Karachi</span> on{" "}
-                    <span className="underline font-bold">
-                      ___{data?.createdAt?.split("-")[0]}___
-                    </span>{" "}
-                    BETWEEN
+                    "Agreement") made BETWEEN
                   </p>
                   <h1 className="text-xl font-bold tracking-wider mb-1">
                     {data.name}
@@ -437,7 +432,7 @@ const ViewDetail: React.FC<ViewDetailProps> = ({ data }) => {
                 </div>
                 <div className="text-xs mb-6">
                   <p>
-                    I accept your sale offer &amp; and therefore purchase the
+                    I accept your sale offer &amp; therefore I purchase the
                     Asset from you for a Contract Price of{" "}
                     <span className="font-bold">Rs. {data.price} -</span> (
                     {numberToWords.toWords(data.price)}) which shall be payable
