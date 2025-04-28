@@ -31,6 +31,7 @@ export interface UserData {
   updatedAt: string;
   price: number;
   installment_tenure: number;
+  isRejectMusawamah: boolean;
   __v: number;
   _id: string;
 }

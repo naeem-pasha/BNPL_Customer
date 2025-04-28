@@ -608,6 +608,66 @@ const assaignDate = async (req, res) => {
   }
 };
 
+const rejectMusawamah = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Validate the ID
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: "User ID is required.",
+      });
+    }
+
+    // Update the user record locally
+    const result = await User.findByIdAndUpdate(
+      id,
+      { isRejectMusawamah: true },
+      { new: true }
+    );
+
+    // If user not found
+    if (!result) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+
+    // Notify the external bank server
+    try {
+      const { data } = await axios.put(
+        `${process.env.BANK_SERVER_URL}/api/request/reject-musawamah-user/${id}`
+      );
+      // Optionally check the `data` for success if needed
+    } catch (axiosError) {
+      console.error("Failed to notify bank server:", axiosError.message);
+
+      return res.status(200).json({
+        success: true,
+        message: "User rejected locally, but failed to notify bank server.",
+        data: result,
+      });
+    }
+
+    // Success response
+    return res.status(200).json({
+      success: true,
+      message: "Musawamah request rejected successfully.",
+      data: result,
+    });
+  } catch (error) {
+    console.error("Internal error:", error.message);
+
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred while rejecting the Musawamah request.",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   createUser,
   loginUser,
@@ -625,4 +685,5 @@ module.exports = {
   userAcceptDelivery,
   getDistributerDetail,
   assaignDate,
+  rejectMusawamah,
 };

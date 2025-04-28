@@ -78,18 +78,17 @@ const DeliveryAuthorizationDialog: React.FC<ViewDetailProps> = ({ data }) => {
         {/* Subject Section */}
         <div className="mb-6">
           <h3 className="text-lg font-bold mb-4 border-b-2 border-dashed pb-2">
-            Re: Authorization to Deliver the Goods
+            Re: Authorization to take delivery of Bike.
           </h3>
           <p className="text-gray-600 mb-4">
-            With reference to the Sales Receipt Number {data?._id.split("-")[0]}
-            , dated
+            With reference to the Sale offer, Number {data?._id.split("-")[0]},
+            dated
             <span className="font-semibold">
               {" "}
               {data?.updatedAt.split("T")[0]}
             </span>
-            , we hereby confirm its receipt and hereby authorize you to take
-            possession of the Goods and deliver it to our customer as per
-            following details:
+            , we hereby confirm its receipt and hereby allow you to take
+            delivery of your bike, have following details:
           </p>
         </div>
 
@@ -131,7 +130,7 @@ const DeliveryAuthorizationDialog: React.FC<ViewDetailProps> = ({ data }) => {
           </div>
           <div className="space-y-2">
             <div className="flex gap-2">
-              <span className="font-semibold w-32">Buyer CXUC Number:</span>
+              <span className="font-semibold w-32">Buyer CNIC Number:</span>
               <span>{data?.cnic}</span>
             </div>
             <div className="flex gap-2">
@@ -163,7 +162,6 @@ const DeliveryAuthorizationDialog: React.FC<ViewDetailProps> = ({ data }) => {
         {/* Footer Section */}
         <div className="mt-8 border-t-2 pt-4">
           <div className="text-right">
-            <p className="font-semibold">For and on behalf of</p>
             <p className="text-lg font-bold text-gray-700">
               Meezan Bank Limited
             </p>

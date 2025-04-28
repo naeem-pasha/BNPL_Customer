@@ -17,6 +17,7 @@ import axios from "axios";
 import DeliveryAuthorizationDialog from "@/components/ui/custom/DeliveryAuthorization";
 import Invoice from "@/components/ui/custom/Invoice";
 import { DialogClose } from "@radix-ui/react-dialog";
+import numberToWords from "number-to-words";
 
 const Home = () => {
   const { handleLogout, data, status, error, loading } = useHomeHook();
@@ -188,6 +189,7 @@ const ViewDetail: React.FC<ViewDetailProps> = ({ data }) => {
   const [error, setError] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
+  console.log(data);
   const disable = !data?.ownerShipTransfer;
 
   // const handleAccept = async (id: string) => {
@@ -224,6 +226,29 @@ const ViewDetail: React.FC<ViewDetailProps> = ({ data }) => {
       if (result.data.success) {
         setIsOpen(false); // Close dialog on success
         // Optional: Add toast notification here
+      }
+    } catch (err) {
+      console.log(err);
+      if (axios.isAxiosError(err)) {
+        setError(
+          err.response?.data?.message || "Failed to accept the musawamah"
+        );
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleRejected = async (id: string) => {
+    try {
+      setIsSubmitting(true);
+      setError(null);
+
+      const result = await axios.put(
+        `${import.meta.env.VITE_USER_SERVER}/api/user/rejected-musawamah/${id}`
+      );
+      if (result.data.success) {
+        setIsOpen(false);
       }
     } catch (err) {
       console.log(err);
@@ -296,11 +321,11 @@ const ViewDetail: React.FC<ViewDetailProps> = ({ data }) => {
                 </div>
                 <div className="mb-4 text-sm">
                   <p>
-                    OED We offer to purchase the following Asset(s) from you for{" "}
-                    <span className="font-bold">Rs. {data.price}/-</span>{" "}
-                    (Rupees SEVENTY EIGHT THOUSAND NINE HUNDRED AND FORTY EIGHT
-                    Only) which shall be payable by us as per the terms of the
-                    Master Musawamah Agreement between us{" "}
+                    We offer to sale the following Asset(s) to you for{" "}
+                    <span className="font-bold">Rs. {data.price}/-</span> (
+                    {numberToWords.toWords(data.price)}) which shall be payable
+                    by you as per the terms of the Master Musawamah Agreement
+                    between us{" "}
                     <span className="underline">
                       ___{data?.createdAt?.split("-")[0]}___
                     </span>
@@ -373,10 +398,10 @@ const ViewDetail: React.FC<ViewDetailProps> = ({ data }) => {
                     <tbody>
                       <tr>
                         <td className="border border-black p-1 pl-2">
-                          {data?.installment_tenure} Months
+                          Each Month
                         </td>
                         <td className="border border-black p-1 text-center">
-                          {data?.price}/-
+                          {data?.price / data.installment_tenure}/-
                         </td>
                       </tr>
                       <tr>
@@ -393,7 +418,7 @@ const ViewDetail: React.FC<ViewDetailProps> = ({ data }) => {
                 <div className="mb-4 text-sm">
                   <p>
                     Customer Name:{" "}
-                    <span className="font-bold">OWAIS AHMED SIDDIQUI</span>
+                    <span className="font-bold">{data.name}</span>
                   </p>
                   <div className="flex mt-4">
                     <p>
@@ -412,42 +437,30 @@ const ViewDetail: React.FC<ViewDetailProps> = ({ data }) => {
                 </div>
                 <div className="text-xs mb-6">
                   <p>
-                    I/We accept your purchase offer &amp; sell the Asset to you
-                    for a Contract Price of{" "}
-                    <span className="font-bold">Rs. {data.price} -</span>{" "}
-                    (Rupees SEVENTY EIGHT THOUSAND NINE HUNDRED AND FORTY EIGHT
-                    Only) which shall be payable as per the terms of the Master
-                    Musawamah Agreement between us{" "}
+                    I accept your sale offer &amp; and therefore purchase the
+                    Asset from you for a Contract Price of{" "}
+                    <span className="font-bold">Rs. {data.price} -</span> (
+                    {numberToWords.toWords(data.price)}) which shall be payable
+                    by me as per the terms of the Master Musawamah Agreement
+                    between us{" "}
                     <span className="underline">
                       ___{data?.createdAt?.split("-")[0]}___
                     </span>{" "}
                     in accordance with the Payment Schedule appearing above
                   </p>
                 </div>
-                <div className="text-xs">
-                  <p>For and on behalf of</p>
-                  <p>Meezan Bank Limited</p>
-                  <p className="mt-4">WITNESSES:</p>
-                  <div className="flex justify-between mt-4">
-                    <div className="w-1/2 border-t border-black pt-1">
-                      <p>Name: _______________</p>
-                      <p>CNIC No: ____________</p>
-                      <p>Address: ____________</p>
-                    </div>
-                    <div className="w-1/2 border-t border-black pt-1">
-                      <p>Name: _______________</p>
-                      <p>CNIC No: ____________</p>
-                      <p>Address: ____________</p>
-                    </div>
-                  </div>
-                </div>
               </div>
 
               {!data.isPublishedDeliveryLetter && (
                 <Button
                   onClick={() => handleAccept(data._id)}
-                  disabled={isSubmitting || data.isAcceptMusawamah}
-                  className="relative"
+                  disabled={
+                    isSubmitting ||
+                    data.isAcceptMusawamah ||
+                    data.isRejectMusawamah
+                  }
+                  className="relative bg-green-700"
+                  variant="default"
                 >
                   {isSubmitting && (
                     <span className="absolute left-2 top-2 animate-spin">
@@ -455,6 +468,25 @@ const ViewDetail: React.FC<ViewDetailProps> = ({ data }) => {
                     </span>
                   )}
                   Accept
+                </Button>
+              )}
+              {!data.isPublishedDeliveryLetter && (
+                <Button
+                  onClick={() => handleRejected(data._id)}
+                  disabled={
+                    isSubmitting ||
+                    data.isAcceptMusawamah ||
+                    data.isRejectMusawamah
+                  }
+                  className="relative"
+                  variant="destructive"
+                >
+                  {isSubmitting && (
+                    <span className="absolute left-2 top-2 animate-spin">
+                      ↻
+                    </span>
+                  )}
+                  Reject
                 </Button>
               )}
             </div>

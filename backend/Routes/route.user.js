@@ -16,6 +16,7 @@ const {
   userAcceptDelivery,
   getDistributerDetail,
   assaignDate,
+  rejectMusawamah,
 } = require("../Controller/user.js");
 const authMiddleware = require("../Middleware/authmiddleware.js");
 
@@ -52,5 +53,7 @@ route.put("/accept-delivery/:id", userAcceptDelivery);
 route.get("/get-distributer-detail/:number", getDistributerDetail);
 
 route.put("/assaign-date/:id", assaignDate);
+
+route.put("/rejected-musawamah/:id", rejectMusawamah);
 
 module.exports = route;

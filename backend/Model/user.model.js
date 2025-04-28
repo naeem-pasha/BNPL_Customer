@@ -32,6 +32,7 @@ const userSchema = new mongoose.Schema(
     isUserAcceptDelivery: { type: Boolean },
     price: { type: Number },
     installment_tenure: { type: Number },
+    isRejectMusawamah: { type: Boolean },
   },
   { timestamps: true }
 );

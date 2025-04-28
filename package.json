@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "backend": "cd backend && npm run dev",
-    "frontend": "vite --port 7000",
+    "frontend": "vite --host 0.0.0.0 --port 7000",
     "dev": "concurrently -n frontend,backend \"npm run frontend\" \"npm run backend\"",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
@@ -27,6 +27,7 @@
     "countdown": "^2.6.0",
     "dotenv": "^16.4.7",
     "lucide-react": "^0.453.0",
+    "number-to-words": "^1.2.4",
     "react": "^18.3.1",
     "react-countdown": "^2.3.6",
     "react-dom": "^18.3.1",
