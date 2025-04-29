@@ -225,7 +225,7 @@ const ViewDetail: React.FC<ViewDetailProps> = ({ data }) => {
       );
       if (result.data.success) {
         setIsOpen(false); // Close dialog on success
-        // Optional: Add toast notification here
+        window.location.reload();
       }
     } catch (err) {
       console.log(err);
@@ -249,6 +249,7 @@ const ViewDetail: React.FC<ViewDetailProps> = ({ data }) => {
       );
       if (result.data.success) {
         setIsOpen(false);
+        window.location.reload();
       }
     } catch (err) {
       console.log(err);
