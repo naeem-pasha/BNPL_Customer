@@ -91,7 +91,7 @@ const DeliveryAuthorizationDialog: React.FC<ViewDetailProps> = ({ data }) => {
             delivery of your bike, have following details: */}
             With reference to the Musawamah contract, signed between MBL and
             you, # {data?._id.split("-")[0]},. We hereby allow you to take
-            possession of the Bike from and have following details:
+            possession of the Bike which has the following details:
           </p>
         </div>
 
