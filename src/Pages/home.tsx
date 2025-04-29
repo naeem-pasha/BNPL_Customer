@@ -636,7 +636,7 @@ const ConfirmationRequest: React.FC<ConfirmationRequestProps> = ({ data }) => {
 
             <p className="text-gray-700 mb-5">
               Please confirm that you have taken the delivery and possession of
-              the below item(s) on MBL’s behalf. Asset Name {data.bikeVarient},
+              the below item(s). Asset Name {data.bikeVarient},
             </p>
 
             <div className="bg-blue-50 p-4 border-l-4 border-blue-500 mb-5">
