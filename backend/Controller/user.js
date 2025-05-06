@@ -65,8 +65,7 @@ const createUser = async (req, res) => {
       from: "donotreply@example.com", // Sender's email
       to: email, // User's email
       subject: "Your Account Credentials",
-       text = `Hello ${name},\n\nYour account has been created. Here are your credentials:\nEmail: ${email}\nPassword: ${randomPassword}\n\nYou can log in using the following link:\nhttp://3.89.161.124:7000\n\nThank you!`;
-
+      text: `Hello ${name},\n\nYour account has been created. Here are your credentials:\nEmail: ${email}\nPassword: ${randomPassword}\n\nYou can log in using the following link:\nhttp://3.89.161.124:7000\n\nThank you!`,
     };
 
     await transporter.sendMail(emailOptions);
